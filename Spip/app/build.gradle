@@ -16,6 +16,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -26,6 +29,8 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.android.support:appcompat-v7:$androidSupportVersion"
+    implementation "com.android.support:recyclerview-v7:$androidSupportVersion"
+    implementation "com.android.support:design:$androidSupportVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     implementation 'com.jakewharton.timber:timber:4.7.1'
