@@ -22,22 +22,22 @@ public class PersonEntry {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private int id;
+    private long id;
     private String name;
     @ColumnInfo(name = "added_at")
     private Date addedAt;
 
     @ColumnInfo(name = "group_id")
-    private int groupId;
+    private long groupId;
 
-    public PersonEntry(int id, String name, Date addedAt, int groupId) {
+    public PersonEntry(long id, String name, Date addedAt, long groupId) {
         this.id = id;
         this.name = name;
         this.addedAt = addedAt;
         this.groupId = groupId;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -49,7 +49,11 @@ public class PersonEntry {
         return addedAt;
     }
 
-    public int getGroupId() {
+    public long getGroupId() {
         return groupId;
+    }
+
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
     }
 }

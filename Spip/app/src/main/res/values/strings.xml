@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Spip</string>
+    <string name="title_activity_add_group">AddGroupActivity</string>
+    <string name="hint_group_name">Group name</string>
+    <string name="text_primary_currency">Primary currency</string>
+    <string name="text_participants">Participants</string>
+    <string name="hint_group_description">Group description</string>
+    <string name="hint_name">Name</string>
+    <string name="label_add">Add</string>
+    <string name="action_done">DONE</string>
+    <string name="group_icon">group_icon</string>
+    <string-array name="list_currencies">
+        <item>EUR</item>
+        <item>USD</item>
+    </string-array>
 </resources>

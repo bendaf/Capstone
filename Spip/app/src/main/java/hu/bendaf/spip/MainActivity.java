@@ -1,6 +1,7 @@
 package hu.bendaf.spip;
 
 import android.arch.lifecycle.Observer;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,7 +20,7 @@ import hu.bendaf.spip.data.SpipDatabase;
 import hu.bendaf.spip.databinding.ActivityMainBinding;
 import hu.bendaf.spip.databinding.GroupListItemBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ActivityMainBinding mBinding;
     private GroupListAdapter mAdapter;
@@ -38,12 +39,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 //        SpipRepository.getInstance(this, AppExecutors.getInstance()).addGroup("Group 1");
-//        SpipRepository.getInstance(this, AppExecutors.getInstance()).addGroup("Group 1");
-//        SpipRepository.getInstance(this, AppExecutors.getInstance()).addGroup("Group 1");
+        mBinding.fabAddGroup.setOnClickListener(this);
     }
 
-    public void addGroup(View view) {
-
+    @Override public void onClick(View v) {
+        if(v.getTag() != null && v.getTag() instanceof Integer) {
+            //TODO
+        } else {
+            Intent addGroupActivity = new Intent(this, AddGroupActivity.class);
+            startActivity(addGroupActivity);
+        }
     }
 
     class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.SimpleVH> {
@@ -62,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override public void onBindViewHolder(@NonNull SimpleVH holder, int position) {
-            holder.mBinding.setGroupEntity(mGroups.get(position));
+            holder.mBinding.setGroupEntry(mGroups.get(position));
+            holder.mBinding.getRoot().setTag(mGroups.get(position).getId());
         }
 
         public void updateGroups(List<GroupEntry> groups) {
@@ -77,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             SimpleVH(final GroupListItemBinding itemBinding) {
                 super(itemBinding.getRoot());
                 mBinding = itemBinding;
+                mBinding.getRoot().setOnClickListener(MainActivity.this);
             }
         }
     }

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import hu.bendaf.spip.AppExecutors;
 
@@ -39,8 +40,24 @@ import hu.bendaf.spip.AppExecutors;
         });
     }
 
+    public void addGroup(final String name, final String mainCurrency, final String description) {
+        addGroup(name, mainCurrency, description, Calendar.getInstance().getTime());
+    }
+
     public void addGroup(String name) {
-        addGroup(name, null, null, Calendar.getInstance().getTime());
+        addGroup(name, null, null);
+    }
+
+    public void addGroupWithPeople(final GroupEntry groupEntry, final List<PersonEntry> people){
+        mExecutors.diskIO().execute(new Runnable() {
+            @Override public void run() {
+                long id = mSpipDao.addGroup(groupEntry);
+                for(PersonEntry p : people){
+                    p.setGroupId(id);
+                    mSpipDao.addPerson(p);
+                }
+            }
+        });
     }
 
 }

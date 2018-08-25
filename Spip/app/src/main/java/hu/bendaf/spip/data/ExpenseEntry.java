@@ -22,20 +22,20 @@ public class ExpenseEntry {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private int id;
+    private long id;
     private String name;
 
     private Date date;
 
     @ColumnInfo(name = "group_id")
-    private int groupId;
+    private long groupId;
     private double amount;
     private String currency;
 
     @ColumnInfo(name = "is_transfer")
     private boolean isTransfer;
 
-    public ExpenseEntry(int id, String name, Date date, int groupId, double amount, String currency, boolean isTransfer) {
+    public ExpenseEntry(long id, String name, Date date, long groupId, double amount, String currency, boolean isTransfer) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -45,7 +45,7 @@ public class ExpenseEntry {
         this.isTransfer = isTransfer;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -57,7 +57,7 @@ public class ExpenseEntry {
         return date;
     }
 
-    public int getGroupId() {
+    public long getGroupId() {
         return groupId;
     }
 

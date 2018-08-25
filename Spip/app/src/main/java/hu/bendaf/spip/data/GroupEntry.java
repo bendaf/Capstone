@@ -14,7 +14,7 @@ import java.util.Date;
 public class GroupEntry {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
     private String name;
     private String description;
     @ColumnInfo(name = "created_at")
@@ -22,7 +22,7 @@ public class GroupEntry {
     @ColumnInfo(name = "main_currency")
     private String mainCurrency;
 
-    public GroupEntry(int id, String name, String description, Date createdAt, String mainCurrency) {
+    public GroupEntry(long id, String name, String description, Date createdAt, String mainCurrency) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -30,7 +30,7 @@ public class GroupEntry {
         this.mainCurrency = mainCurrency;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

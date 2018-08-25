@@ -13,6 +13,7 @@ import java.util.List;
  * Created by bendaf on 2018. 08. 25. Spip.
  */
 
+@SuppressWarnings("unused")
 @Dao
 public interface SpipDao {
 
@@ -32,7 +33,7 @@ public interface SpipDao {
      * @return The {@link PersonEntry} persons belonging to the given {@link GroupEntry}.
      */
     @Query("SELECT * FROM persons WHERE group_id=:groupId")
-    LiveData<List<PersonEntry>> getPersons(int groupId);
+    LiveData<List<PersonEntry>> getPersons(long groupId);
 
     /**
      * Selects all expenses for a group
@@ -42,55 +43,59 @@ public interface SpipDao {
      * @return The list of {@link ExpenseEntry} belonging to the given {@link GroupEntry}.
      */
     @Query("SELECT * FROM expenses WHERE group_id=:groupId")
-    LiveData<List<ExpenseEntry>> getExpenses(int groupId);
+    LiveData<List<ExpenseEntry>> getExpenses(long groupId);
 
     /**
      * Get a list of {@link PersonEntry} who have paid an {@link ExpenseEntry}.
+     *
      * @param expenseId The {@link ExpenseEntry} in which we are interested in.
+     *
      * @return A {@link LiveData} of {@link List} of {@link PersonEntry} who paid.
      */
     @Query("SELECT persons.id, persons.name, persons.added_at, persons.group_id " +
                    "FROM persons INNER JOIN paid ON persons.id = paid.person_id WHERE paid.expense_id=:expenseId")
-    LiveData<List<PersonEntry>> getPaidBy(int expenseId);
+    LiveData<List<PersonEntry>> getPaidBy(long expenseId);
 
     /**
      * Get a list of {@link PersonEntry} who have spent an {@link ExpenseEntry}.
+     *
      * @param expenseId The {@link ExpenseEntry} in which we are interested in.
+     *
      * @return A {@link LiveData} of {@link List} of {@link PersonEntry} who spent the expense.
      */
     @Query("SELECT persons.id, persons.name, persons.added_at, persons.group_id " +
                    "FROM persons INNER JOIN spent ON persons.id = spent.person_id WHERE spent.expense_id=:expenseId")
-    LiveData<List<PersonEntry>> getPaidTo(int expenseId);
+    LiveData<List<PersonEntry>> getPaidTo(long expenseId);
 
-    @Insert void addGroup(GroupEntry group);
+    @Insert long addGroup(GroupEntry group);
 
     @Update void updateGroup(GroupEntry groupEntry);
 
     @Delete void deleteGroup(GroupEntry groupEntry);
 
 
-    @Insert void addPerson(PersonEntry person);
+    @Insert List<Long> addPerson(PersonEntry... person);
 
     @Update void updatePerson(PersonEntry person);
 
     @Delete void deletePerson(PersonEntry person);
 
 
-    @Insert void addExpense(ExpenseEntry expense);
+    @Insert long addExpense(ExpenseEntry expense);
 
     @Update void updateExpense(ExpenseEntry expense);
 
     @Delete void deleteExpense(ExpenseEntry expense);
 
 
-    @Insert void addPaid(PaidConnection paid);
+    @Insert long addPaid(PaidConnection paid);
 
     @Update void updatePaid(PaidConnection paid);
 
     @Delete void deletePaid(PaidConnection paid);
 
 
-    @Insert void addSpent(SpentConnection spent);
+    @Insert long addSpent(SpentConnection spent);
 
     @Update void updateSpent(SpentConnection spent);
 

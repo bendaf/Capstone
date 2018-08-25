@@ -17,24 +17,24 @@ import android.arch.persistence.room.Index;
 public class SpentConnection {
 
     @ColumnInfo(name = "person_id")
-    private int personId;
+    private long personId;
 
     @ColumnInfo(name = "expense_id")
-    private int expenseId;
+    private long expenseId;
 
     private int weight;
 
-    public SpentConnection(int personId, int expenseId, int weight) {
+    public SpentConnection(long personId, long expenseId, int weight) {
         this.personId = personId;
         this.expenseId = expenseId;
         this.weight = weight;
     }
 
-    public int getPersonId() {
+    public long getPersonId() {
         return personId;
     }
 
-    public int getExpenseId() {
+    public long getExpenseId() {
         return expenseId;
     }
 

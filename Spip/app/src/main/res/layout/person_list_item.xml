@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="groupEntry"
-            type="hu.bendaf.spip.data.GroupEntry" />
+            name="personEntry"
+            type="hu.bendaf.spip.data.PersonEntry" />
     </data>
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,11 +18,10 @@
 
         <TextView
             android:id="@+id/tv_group_name"
-            style="@style/TextAppearance.AppCompat.Headline"
+            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@{groupEntry.name}" />
+            android:text="@{personEntry.name}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
