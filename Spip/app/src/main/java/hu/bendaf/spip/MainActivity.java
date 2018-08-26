@@ -19,6 +19,7 @@ import hu.bendaf.spip.data.GroupEntry;
 import hu.bendaf.spip.data.SpipDatabase;
 import hu.bendaf.spip.databinding.ActivityMainBinding;
 import hu.bendaf.spip.databinding.GroupListItemBinding;
+import hu.bendaf.spip.utils.FirebaseUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -45,10 +46,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v.getTag() != null && v.getTag() instanceof Long) {
+            FirebaseUtils.getInstance(this).logToFirebase(v.getTag().toString(), "Group opened");
+
             Intent groupBalanceActivity = new Intent(MainActivity.this, GroupBalanceActivity.class);
             groupBalanceActivity.putExtra(GroupBalanceActivity.EXTRA_GROUP_ID, (Long) v.getTag());
             startActivity(groupBalanceActivity);
         } else {
+            FirebaseUtils.getInstance(this).logToFirebase(null, "Create group clicked");
+
             Intent addGroupActivity = new Intent(this, AddGroupActivity.class);
             startActivity(addGroupActivity);
         }

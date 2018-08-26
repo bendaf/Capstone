@@ -26,6 +26,7 @@ import hu.bendaf.spip.data.PersonEntry;
 import hu.bendaf.spip.data.SpipRepository;
 import hu.bendaf.spip.databinding.ActivityAddGroupBinding;
 import hu.bendaf.spip.databinding.PersonListItemBinding;
+import hu.bendaf.spip.utils.FirebaseUtils;
 
 public class AddGroupActivity extends AppCompatActivity {
 
@@ -113,6 +114,8 @@ public class AddGroupActivity extends AppCompatActivity {
         mGroupEntry.setDescription(mBinding.content.etDescription.getText().toString());
         mGroupEntry.setMainCurrency(mBinding.content.spCurrency.getSelectedItem().toString());
         SpipRepository.getInstance(this).updateGroup(mGroupEntry, mAdapter.mPeople);
+
+        FirebaseUtils.getInstance(this).logToFirebase(mGroupEntry.getId().toString(), "Group updated");
     }
 
     private void createGroup() {
@@ -122,6 +125,8 @@ public class AddGroupActivity extends AppCompatActivity {
                 mBinding.content.spCurrency.getSelectedItem().toString());
 
         SpipRepository.getInstance(this).addGroupWithPeople(newGroup, mAdapter.mPeople);
+
+        FirebaseUtils.getInstance(this).logToFirebase(null, "Group created");
     }
 
     class ParticipantListAdapter extends RecyclerView.Adapter<ParticipantListAdapter.SimpleVH> {
