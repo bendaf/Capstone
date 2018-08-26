@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        FirebaseUtils.getInstance(this).logToFirebase(null, "app started");
         mAdapter = new GroupListAdapter();
         mBinding.rvGroups.setAdapter(mAdapter);
 
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         mBinding.fabAddGroup.setOnClickListener(this);
+
+        mBinding.adView.loadAd(new AdRequest.Builder().build());
     }
 
     @Override

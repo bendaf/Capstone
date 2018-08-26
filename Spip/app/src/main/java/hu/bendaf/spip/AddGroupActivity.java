@@ -67,7 +67,7 @@ public class AddGroupActivity extends AppCompatActivity {
             mBinding.content.rvParticipants.setAdapter(mAdapter);
         }
         List<String> currencies = Arrays.asList(getResources().getStringArray(R.array.list_currencies));
-        mBinding.content.spCurrency.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+        mBinding.content.spCurrency.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
                 currencies));
 
         mBinding.content.etNewPerson.setImeActionLabel(getString(R.string.label_add), KeyEvent.KEYCODE_ENTER);

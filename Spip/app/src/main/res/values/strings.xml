@@ -17,4 +17,7 @@
     <string name="tab_text_history">History</string>
     <string name="tab_text_balances">Balances</string>
     <string name="action_edit">Edit</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="appwidget_text">Add group</string>
+    <string name="add_widget">Add widget</string>
 </resources>
