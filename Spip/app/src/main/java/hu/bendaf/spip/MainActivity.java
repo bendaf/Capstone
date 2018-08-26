@@ -38,13 +38,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mAdapter.updateGroups(groupEntries);
             }
         });
-//        SpipRepository.getInstance(this, AppExecutors.getInstance()).addGroup("Group 1");
+
         mBinding.fabAddGroup.setOnClickListener(this);
     }
 
-    @Override public void onClick(View v) {
-        if(v.getTag() != null && v.getTag() instanceof Integer) {
-            //TODO
+    @Override
+    public void onClick(View v) {
+        if(v.getTag() != null && v.getTag() instanceof Long) {
+            Intent groupBalanceActivity = new Intent(MainActivity.this, GroupBalanceActivity.class);
+            groupBalanceActivity.putExtra(GroupBalanceActivity.EXTRA_GROUP_ID, (Long) v.getTag());
+            startActivity(groupBalanceActivity);
         } else {
             Intent addGroupActivity = new Intent(this, AddGroupActivity.class);
             startActivity(addGroupActivity);

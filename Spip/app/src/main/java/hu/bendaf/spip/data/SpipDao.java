@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
@@ -67,6 +68,12 @@ public interface SpipDao {
                    "FROM persons INNER JOIN spent ON persons.id = spent.person_id WHERE spent.expense_id=:expenseId")
     LiveData<List<PersonEntry>> getPaidTo(long expenseId);
 
+    @Query("SELECT * from groups WHERE groups.id=:groupId")
+    LiveData<GroupEntry> getGroup(long groupId);
+
+    @Query("SELECT * FROM expenses WHERE expenses.id=:expenseId")
+    LiveData<ExpenseEntry> getExpense(long expenseId);
+
     @Insert long addGroup(GroupEntry group);
 
     @Update void updateGroup(GroupEntry groupEntry);
@@ -74,7 +81,8 @@ public interface SpipDao {
     @Delete void deleteGroup(GroupEntry groupEntry);
 
 
-    @Insert List<Long> addPerson(PersonEntry... person);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    List<Long> addPerson(PersonEntry... person);
 
     @Update void updatePerson(PersonEntry person);
 

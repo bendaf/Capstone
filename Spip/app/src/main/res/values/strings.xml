@@ -7,10 +7,14 @@
     <string name="hint_group_description">Group description</string>
     <string name="hint_name">Name</string>
     <string name="label_add">Add</string>
-    <string name="action_done">DONE</string>
+    <string name="action_done">Done</string>
     <string name="group_icon">group_icon</string>
     <string-array name="list_currencies">
         <item>EUR</item>
         <item>USD</item>
     </string-array>
+    <string name="title_activity_group_balance">GroupBalanceActivity</string>
+    <string name="tab_text_history">History</string>
+    <string name="tab_text_balances">Balances</string>
+    <string name="action_edit">Edit</string>
 </resources>

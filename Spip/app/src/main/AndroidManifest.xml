@@ -25,6 +25,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="hu.bendaf.spip.MainActivity" />
         </activity>
+        <activity
+            android:name=".GroupBalanceActivity"
+            android:label="@string/title_activity_group_balance"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="hu.bendaf.spip.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

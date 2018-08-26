@@ -49,4 +49,16 @@ public class GroupEntry {
     public String getMainCurrency() {
         return mainCurrency;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setMainCurrency(String mainCurrency) {
+        this.mainCurrency = mainCurrency;
+    }
 }

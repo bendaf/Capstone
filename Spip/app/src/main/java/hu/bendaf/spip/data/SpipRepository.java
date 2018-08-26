@@ -1,5 +1,6 @@
 package hu.bendaf.spip.data;
 
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.util.Log;
 
@@ -23,10 +24,10 @@ import hu.bendaf.spip.AppExecutors;
         mExecutors = executors;
     }
 
-    public synchronized static SpipRepository getInstance(Context context, AppExecutors executors) {
+    public synchronized static SpipRepository getInstance(Context context) {
         Log.d(LOG_TAG, "Getting the repository");
         if(sInstance == null) {
-            sInstance = new SpipRepository(SpipDatabase.getInstance(context).spipDao(), executors);
+            sInstance = new SpipRepository(SpipDatabase.getInstance(context).spipDao(), AppExecutors.getInstance());
             Log.d(LOG_TAG, "Made new repository");
         }
         return sInstance;
@@ -48,11 +49,11 @@ import hu.bendaf.spip.AppExecutors;
         addGroup(name, null, null);
     }
 
-    public void addGroupWithPeople(final GroupEntry groupEntry, final List<PersonEntry> people){
+    public void addGroupWithPeople(final GroupEntry groupEntry, final List<PersonEntry> people) {
         mExecutors.diskIO().execute(new Runnable() {
             @Override public void run() {
                 long id = mSpipDao.addGroup(groupEntry);
-                for(PersonEntry p : people){
+                for(PersonEntry p : people) {
                     p.setGroupId(id);
                     mSpipDao.addPerson(p);
                 }
@@ -60,4 +61,23 @@ import hu.bendaf.spip.AppExecutors;
         });
     }
 
+    public LiveData<GroupEntry> getGroupById(long groupId) {
+        return mSpipDao.getGroup(groupId);
+    }
+
+    public void updateGroup(final GroupEntry groupEntry, final List<PersonEntry> people) {
+        mExecutors.diskIO().execute(new Runnable() {
+            @Override public void run() {
+                mSpipDao.updateGroup(groupEntry);
+                for(PersonEntry p : people) {
+                    p.setGroupId(groupEntry.getId());
+                    mSpipDao.addPerson(p);
+                }
+            }
+        });
+    }
+
+    public LiveData<List<PersonEntry>> getGroupParticipants(Long mGroupId) {
+        return mSpipDao.getPersons(mGroupId);
+    }
 }
