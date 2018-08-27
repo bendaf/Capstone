@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package hu.bendaf.spip;
+package hu.bendaf.spip.utils;
 
 import android.os.Handler;
 import android.os.Looper;

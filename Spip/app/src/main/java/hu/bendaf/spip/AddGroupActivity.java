@@ -1,6 +1,7 @@
 package hu.bendaf.spip;
 
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -35,7 +36,8 @@ public class AddGroupActivity extends AppCompatActivity {
     private static final String EXTRA_GROUP = "group";
     ActivityAddGroupBinding mBinding;
     private ParticipantListAdapter mAdapter;
-    private GroupEntry mGroupEntry = new GroupEntry(0, null, null, null, null);
+    private GroupListViewModel mViewModel;
+    private GroupEntry mGroupEntry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +51,17 @@ public class AddGroupActivity extends AppCompatActivity {
 
         assert mBinding.content != null;
         mAdapter = new ParticipantListAdapter(new ArrayList<PersonEntry>());
+        mViewModel = ViewModelProviders.of(this).get(GroupListViewModel.class);
         if(getIntent().hasExtra(GroupBalanceActivity.EXTRA_GROUP_ID)) {
             long groupId = getIntent().getLongExtra(GroupBalanceActivity.EXTRA_GROUP_ID, -1);
-            SpipRepository.getInstance(this).getGroupById(groupId).observe(AddGroupActivity.this,
+            mViewModel.getGroupById(groupId).observe(AddGroupActivity.this,
                     new Observer<GroupEntry>() {
                         @Override public void onChanged(@Nullable GroupEntry groupEntry) {
                             mGroupEntry = groupEntry;
                             mBinding.setGroupEntry(groupEntry);
                         }
                     });
-            SpipRepository.getInstance(this).getGroupParticipants(groupId).observe(this,
+            mViewModel.getPersons(groupId).observe(this,
                     new Observer<List<PersonEntry>>() {
                         @Override public void onChanged(@Nullable List<PersonEntry> personEntries) {
                             mAdapter = new ParticipantListAdapter(personEntries);
@@ -72,7 +75,7 @@ public class AddGroupActivity extends AppCompatActivity {
                 }
                 if(savedInstanceState.getParcelable(EXTRA_GROUP) != null) {
                     mGroupEntry = savedInstanceState.getParcelable(EXTRA_GROUP);
-                }
+            }
             }
             mBinding.setGroupEntry(mGroupEntry);
             mBinding.content.rvParticipants.setAdapter(mAdapter);

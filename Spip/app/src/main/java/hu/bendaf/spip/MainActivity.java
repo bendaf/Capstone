@@ -1,6 +1,7 @@
 package hu.bendaf.spip;
 
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hu.bendaf.spip.data.GroupEntry;
-import hu.bendaf.spip.data.SpipDatabase;
 import hu.bendaf.spip.databinding.ActivityMainBinding;
 import hu.bendaf.spip.databinding.GroupListItemBinding;
 import hu.bendaf.spip.utils.FirebaseUtils;
@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ActivityMainBinding mBinding;
     private GroupListAdapter mAdapter;
+    private GroupListViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdapter = new GroupListAdapter();
         mBinding.rvGroups.setAdapter(mAdapter);
 
-        SpipDatabase.getInstance(this).spipDao().getGroups().observe(this, new Observer<List<GroupEntry>>() {
+        mViewModel = ViewModelProviders.of(this).get(GroupListViewModel.class);
+
+        mViewModel.getGroupList().observe(this, new Observer<List<GroupEntry>>() {
             @Override public void onChanged(@Nullable List<GroupEntry> groupEntries) {
                 mAdapter.updateGroups(groupEntries);
             }
@@ -50,18 +53,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v.getTag() != null && v.getTag() instanceof Long) {
-            FirebaseUtils.getInstance(this).logToFirebase(v.getTag().toString(), "Group opened");
+        Intent addGroupActivity = new Intent(this, AddGroupActivity.class);
+        startActivity(addGroupActivity);
 
-            Intent groupBalanceActivity = new Intent(MainActivity.this, GroupBalanceActivity.class);
-            groupBalanceActivity.putExtra(GroupBalanceActivity.EXTRA_GROUP_ID, (Long) v.getTag());
-            startActivity(groupBalanceActivity);
-        } else {
-            FirebaseUtils.getInstance(this).logToFirebase(null, "Create group clicked");
-
-            Intent addGroupActivity = new Intent(this, AddGroupActivity.class);
-            startActivity(addGroupActivity);
-        }
+        FirebaseUtils.getInstance(this).logToFirebase(null, "Create group clicked");
     }
 
     class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.SimpleVH> {
@@ -89,14 +84,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             notifyDataSetChanged();
         }
 
-        class SimpleVH extends RecyclerView.ViewHolder {
+        class SimpleVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             private GroupListItemBinding mBinding;
 
             SimpleVH(final GroupListItemBinding itemBinding) {
                 super(itemBinding.getRoot());
                 mBinding = itemBinding;
-                mBinding.getRoot().setOnClickListener(MainActivity.this);
+                mBinding.getRoot().setOnClickListener(SimpleVH.this);
+            }
+
+            @Override public void onClick(View v) {
+                Intent groupBalanceActivity = new Intent(MainActivity.this, GroupBalanceActivity.class);
+                groupBalanceActivity.putExtra(GroupBalanceActivity.EXTRA_GROUP_ID, (Long) v.getTag());
+                startActivity(groupBalanceActivity);
+
+                FirebaseUtils.getInstance(getApplicationContext()).logToFirebase(v.getTag().toString(), "Group opened");
             }
         }
     }

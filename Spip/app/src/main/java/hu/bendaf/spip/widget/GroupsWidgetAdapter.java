@@ -1,4 +1,4 @@
-package hu.bendaf.spip;
+package hu.bendaf.spip.widget;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.widget.RemoteViewsService;
 
 import java.util.List;
 
+import hu.bendaf.spip.R;
 import hu.bendaf.spip.data.GroupEntry;
 import hu.bendaf.spip.data.SpipRepository;
 

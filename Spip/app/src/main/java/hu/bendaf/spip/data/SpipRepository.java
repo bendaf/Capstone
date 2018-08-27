@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import hu.bendaf.spip.AppExecutors;
+import hu.bendaf.spip.utils.AppExecutors;
 
 /**
  * Created by bendaf on 2018. 08. 25. Spip.
@@ -80,5 +80,9 @@ import hu.bendaf.spip.AppExecutors;
 
     public List<GroupEntry> loadGroupsForWidget() {
         return mSpipDao.loadGroupsForWidget();
+    }
+
+    public LiveData<List<GroupEntry>> getGroups() {
+        return mSpipDao.getGroups();
     }
 }

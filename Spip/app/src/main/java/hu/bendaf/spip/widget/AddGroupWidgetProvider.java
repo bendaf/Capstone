@@ -1,4 +1,4 @@
-package hu.bendaf.spip;
+package hu.bendaf.spip.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import hu.bendaf.spip.AddGroupActivity;
+import hu.bendaf.spip.R;
 import timber.log.Timber;
 
 /**

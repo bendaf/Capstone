@@ -39,7 +39,7 @@
                 android:value="hu.bendaf.spip.MainActivity" />
         </activity>
 
-        <receiver android:name=".AddGroupWidgetProvider">
+        <receiver android:name=".widget.AddGroupWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -50,7 +50,7 @@
         </receiver>
 
         <service
-            android:name=".GroupsWidgetAdapter"
+            android:name=".widget.GroupsWidgetAdapter"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
