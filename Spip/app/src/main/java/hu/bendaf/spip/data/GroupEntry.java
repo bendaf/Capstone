@@ -3,6 +3,8 @@ package hu.bendaf.spip.data;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.Date;
 
@@ -11,7 +13,7 @@ import java.util.Date;
  */
 
 @Entity(tableName = "groups")
-public class GroupEntry {
+public class GroupEntry implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
@@ -61,4 +63,39 @@ public class GroupEntry {
     public void setMainCurrency(String mainCurrency) {
         this.mainCurrency = mainCurrency;
     }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Override public int describeContents() {
+        return 0;
+    }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
+        dest.writeString(this.mainCurrency);
+    }
+
+    protected GroupEntry(Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.description = in.readString();
+        long tmpCreatedAt = in.readLong();
+        this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
+        this.mainCurrency = in.readString();
+    }
+
+    public static final Parcelable.Creator<GroupEntry> CREATOR = new Parcelable.Creator<GroupEntry>() {
+        @Override public GroupEntry createFromParcel(Parcel source) {
+            return new GroupEntry(source);
+        }
+
+        @Override public GroupEntry[] newArray(int size) {
+            return new GroupEntry[size];
+        }
+    };
 }

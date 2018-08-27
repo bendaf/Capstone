@@ -3,6 +3,7 @@ package hu.bendaf.spip;
 import android.arch.lifecycle.Observer;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -30,15 +31,16 @@ import hu.bendaf.spip.utils.FirebaseUtils;
 
 public class AddGroupActivity extends AppCompatActivity {
 
+    private static final String EXTRA_PARTICIPANTS = "participants";
+    private static final String EXTRA_GROUP = "group";
     ActivityAddGroupBinding mBinding;
     private ParticipantListAdapter mAdapter;
-    private GroupEntry mGroupEntry = null;
+    private GroupEntry mGroupEntry = new GroupEntry(0, null, null, null, null);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_group);
-        mBinding.setGroupEntry(new GroupEntry(0, null, null, null, null));
         setSupportActionBar(mBinding.toolbar);
 
         //noinspection ConstantConditions
@@ -46,6 +48,7 @@ public class AddGroupActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         assert mBinding.content != null;
+        mAdapter = new ParticipantListAdapter(new ArrayList<PersonEntry>());
         if(getIntent().hasExtra(GroupBalanceActivity.EXTRA_GROUP_ID)) {
             long groupId = getIntent().getLongExtra(GroupBalanceActivity.EXTRA_GROUP_ID, -1);
             SpipRepository.getInstance(this).getGroupById(groupId).observe(AddGroupActivity.this,
@@ -63,7 +66,15 @@ public class AddGroupActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            mAdapter = new ParticipantListAdapter(new ArrayList<PersonEntry>());
+            if(savedInstanceState != null) {
+                if(savedInstanceState.getParcelableArrayList(EXTRA_PARTICIPANTS) != null) {
+                    mAdapter = new ParticipantListAdapter(savedInstanceState.<PersonEntry>getParcelableArrayList(EXTRA_PARTICIPANTS));
+                }
+                if(savedInstanceState.getParcelable(EXTRA_GROUP) != null) {
+                    mGroupEntry = savedInstanceState.getParcelable(EXTRA_GROUP);
+                }
+            }
+            mBinding.setGroupEntry(mGroupEntry);
             mBinding.content.rvParticipants.setAdapter(mAdapter);
         }
         List<String> currencies = Arrays.asList(getResources().getStringArray(R.array.list_currencies));
@@ -96,7 +107,7 @@ public class AddGroupActivity extends AppCompatActivity {
             case R.id.action_menu_done:
                 assert mBinding.content != null;
                 if(mBinding.content.etName.getText().length() > 0 && mAdapter.getItemCount() > 1) {
-                    if(mGroupEntry == null) {
+                    if(mGroupEntry == null || mGroupEntry.getCreatedAt() == null) {
                         createGroup();
                     } else {
                         updateGroup();
@@ -106,6 +117,12 @@ public class AddGroupActivity extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(EXTRA_PARTICIPANTS, (ArrayList<? extends Parcelable>) mAdapter.mPeople);
+        outState.putParcelable(EXTRA_GROUP, mGroupEntry);
+        super.onSaveInstanceState(outState);
     }
 
     private void updateGroup() {
@@ -120,11 +137,13 @@ public class AddGroupActivity extends AppCompatActivity {
 
     private void createGroup() {
         assert mBinding.content != null;
-        GroupEntry newGroup = new GroupEntry(0, mBinding.content.etName.getText().toString(),
-                mBinding.content.etDescription.getText().toString(), Calendar.getInstance().getTime(),
-                mBinding.content.spCurrency.getSelectedItem().toString());
-
-        SpipRepository.getInstance(this).addGroupWithPeople(newGroup, mAdapter.mPeople);
+        if(mGroupEntry == null) { //TODO - is this a valid use case?
+            mGroupEntry = new GroupEntry(0, mBinding.content.etName.getText().toString(),
+                    mBinding.content.etDescription.getText().toString(), Calendar.getInstance().getTime(),
+                    mBinding.content.spCurrency.getSelectedItem().toString());
+        }
+        mGroupEntry.setCreatedAt(Calendar.getInstance().getTime());
+        SpipRepository.getInstance(this).addGroupWithPeople(mGroupEntry, mAdapter.mPeople);
 
         FirebaseUtils.getInstance(this).logToFirebase(null, "Group created");
     }
