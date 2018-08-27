@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import timber.log.Timber;
+
 /**
  * Implementation of App Widget functionality.
  */
@@ -19,10 +21,14 @@ public class AddGroupWidgetProvider extends AppWidgetProvider {
         PendingIntent p = PendingIntent.getActivity(context, 0, addGroupActivity, 0);
 
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.add_group_widget_provider);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_add_group);
         views.setOnClickPendingIntent(R.id.appwidget_text, p);
+
+        views.setRemoteAdapter(R.id.lv_groups, new Intent(context, GroupsWidgetAdapter.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv_groups);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+        Timber.d("UpdateAppWidget");
     }
 
     @Override

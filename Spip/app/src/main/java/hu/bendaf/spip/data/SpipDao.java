@@ -74,6 +74,9 @@ public interface SpipDao {
     @Query("SELECT * FROM expenses WHERE expenses.id=:expenseId")
     LiveData<ExpenseEntry> getExpense(long expenseId);
 
+    @Query("SELECT * FROM groups")
+    List<GroupEntry> loadGroupsForWidget();
+
     @Insert long addGroup(GroupEntry group);
 
     @Update void updateGroup(GroupEntry groupEntry);

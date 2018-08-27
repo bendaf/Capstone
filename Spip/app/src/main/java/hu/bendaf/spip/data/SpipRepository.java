@@ -2,7 +2,6 @@ package hu.bendaf.spip.data;
 
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
-import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -25,10 +24,8 @@ import hu.bendaf.spip.AppExecutors;
     }
 
     public synchronized static SpipRepository getInstance(Context context) {
-        Log.d(LOG_TAG, "Getting the repository");
         if(sInstance == null) {
             sInstance = new SpipRepository(SpipDatabase.getInstance(context).spipDao(), AppExecutors.getInstance());
-            Log.d(LOG_TAG, "Made new repository");
         }
         return sInstance;
     }
@@ -79,5 +76,9 @@ import hu.bendaf.spip.AppExecutors;
 
     public LiveData<List<PersonEntry>> getGroupParticipants(Long mGroupId) {
         return mSpipDao.getPersons(mGroupId);
+    }
+
+    public List<GroupEntry> loadGroupsForWidget() {
+        return mSpipDao.loadGroupsForWidget();
     }
 }
