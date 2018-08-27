@@ -31,6 +31,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/fab_margin"
                 android:clickable="true"
+                android:contentDescription="@string/text_add_group"
                 android:focusable="true"
                 android:src="@drawable/ic_add_black_48dp" />
 

@@ -1,7 +1,11 @@
 package hu.bendaf.spip;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -57,9 +61,9 @@ public class GroupBalanceActivity extends AppCompatActivity {
 
         mBinding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(final View view) {
+                AsyncTask<Void, Void, Boolean> a = new MyAsyncTask(view, GroupBalanceActivity.this);
+                a.execute();
             }
         });
 
@@ -92,6 +96,40 @@ public class GroupBalanceActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    static class MyAsyncTask extends AsyncTask<Void, Void, Boolean> {
+        private ProgressDialog pd;
+        @SuppressLint("StaticFieldLeak") private View view;
+        @SuppressLint("StaticFieldLeak") Context mContext;
+
+        MyAsyncTask(View v, Context c) {
+            this.view = v;
+            mContext = c;
+            pd = new ProgressDialog(mContext);
+        }
+
+        @Override protected void onPreExecute() {
+            pd.setMessage(mContext.getResources().getString(R.string.text_loading));
+            pd.show();
+        }
+
+        @Override protected void onPostExecute(Boolean aVoid) {
+            if(pd.isShowing()) {
+                pd.dismiss();
+            }
+            Snackbar.make(view, R.string.text_task_done, Snackbar.LENGTH_LONG).show();
+        }
+
+        @Override protected Boolean doInBackground(Void... voids) {
+            try {
+                Thread.sleep(3000);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
     }
 
     /**

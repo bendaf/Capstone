@@ -20,4 +20,8 @@
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="appwidget_text">Add group</string>
     <string name="add_widget">Add widget</string>
+    <string name="text_add_expense">Add Expense</string>
+    <string name="text_add_group">Add Group</string>
+    <string name="text_loading">Loading</string>
+    <string name="text_task_done">Task done.</string>
 </resources>
