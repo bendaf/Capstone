@@ -13,8 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.ads.AdRequest;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         mBinding.fabAddGroup.setOnClickListener(this);
-
-        mBinding.adView.loadAd(new AdRequest.Builder().build());
     }
 
     @Override
