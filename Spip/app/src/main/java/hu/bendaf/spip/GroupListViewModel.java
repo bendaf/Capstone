@@ -14,7 +14,7 @@ import hu.bendaf.spip.data.SpipRepository;
 /**
  * Created by bendaf on 2018. 08. 27. Spip.
  */
-public class GroupListViewModel extends AndroidViewModel {
+public class GroupListViewModel extends AndroidViewModel { //TODO review usages, maybe separate to activities.
     private SpipRepository mRepository;
     private LiveData<List<GroupEntry>> mGroups;
 

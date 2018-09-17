@@ -1,10 +1,11 @@
 package hu.bendaf.spip;
 
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import hu.bendaf.spip.data.GroupEntry;
+import hu.bendaf.spip.data.SpipDatabase;
 import hu.bendaf.spip.databinding.ActivityGroupBalanceBinding;
 
 public class GroupBalanceActivity extends AppCompatActivity {
@@ -36,6 +39,7 @@ public class GroupBalanceActivity extends AppCompatActivity {
      */
     private long mGroupId = -1;
     public static String EXTRA_GROUP_ID = "groupId";
+    private static final int REQUEST_ADD_EXPENSE = 1223;
     private ActivityGroupBalanceBinding mBinding;
 
     @Override
@@ -59,13 +63,19 @@ public class GroupBalanceActivity extends AppCompatActivity {
         mBinding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent addExpenseActivity = new Intent(GroupBalanceActivity.this, AddExpenseActivity.class);
+                addExpenseActivity.putExtra(EXTRA_GROUP_ID, getIntent().getLongExtra(EXTRA_GROUP_ID,-1));
+                startActivityForResult(addExpenseActivity, REQUEST_ADD_EXPENSE);
             }
         });
 
         if(getIntent().hasExtra(EXTRA_GROUP_ID)) {
             mGroupId = getIntent().getLongExtra(EXTRA_GROUP_ID, -1);
+            SpipDatabase.getInstance(this).spipDao().getGroup(mGroupId).observe(this, new Observer<GroupEntry>() {
+                @Override public void onChanged(@Nullable GroupEntry groupEntry) {
+                    getSupportActionBar().setTitle(groupEntry != null ? groupEntry.getName() : "");
+                }
+            });
         }
     }
 
