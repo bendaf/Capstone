@@ -24,4 +24,11 @@
     <string name="text_add_group">Add Group</string>
     <string name="text_loading">Loading</string>
     <string name="text_task_done">Task done.</string>
+    <string name="title_activity_add_expense">AddExpenseActivity</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_date">Date</string>
+    <string name="text_expense">Expense</string>
+    <string name="text_transfer">Transfer</string>
+    <string name="text_paid_to">Paid to</string>
+    <string name="text_paid_by">Paid by</string>
 </resources>

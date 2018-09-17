@@ -52,6 +52,17 @@
         <service
             android:name=".widget.GroupsWidgetAdapter"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <activity
+            android:name=".AddExpenseActivity"
+            android:label="@string/title_activity_add_expense"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".GroupBalanceActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="hu.bendaf.spip.GroupBalanceActivity" />
+        </activity>
     </application>
 
 </manifest>
